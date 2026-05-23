@@ -1,3 +1,9 @@
-- Clean code, make re-use function, not hard code.
-- Commit meanful content but short, must be English.
-- Not JS, must code by class + TS, good pattern.
+- TypeScript only. No `.js`. Code by classes, one class per file.
+- Private members prefixed with `_` (methods and fields).
+- Clean code — no hardcode, reusable methods, const > let.
+- Explicit types on all methods and returns. No `any`.
+- Interfaces for data, classes for logic. Named exports only.
+- API layer returns typed results, never throws to caller.
+- Git commits in English, imperative, short (≤72 chars).
+- Separate by concern: api / search / render / main.
+- Minimal deps. Use native Web APIs (fetch, URL, Set).

@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Food Tour SG</title>
+    <link rel="stylesheet" href="/style.css" />
+  </head>
+  <body>
+    <header class="header">
+      <h1>🍜 Food Tour SG</h1>
+      <p class="subtitle">Saigon food guide — shared via Google Sheets</p>
+    </header>
+
+    <div id="notification" class="notification hidden"></div>
+
+    <div id="loading" class="loading hidden">
+      <div class="spinner"></div>
+      <span>Loading...</span>
+    </div>
+
+    <div class="toolbar">
+      <div class="search-box">
+        <input
+          type="text"
+          id="search-input"
+          placeholder="Search by name, dish, street, district..."
+        />
+      </div>
+      <div class="filter-group">
+        <select id="filter-quan">
+          <option value="">All Districts</option>
+        </select>
+        <select id="filter-phanloai">
+          <option value="">All Categories</option>
+        </select>
+      </div>
+      <button id="btn-add" class="btn btn-primary">+ Add New</button>
+    </div>
+
+    <div class="table-container">
+      <table class="place-table">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Tên quán</th>
+            <th>Tên món</th>
+            <th>Phân loại</th>
+            <th>Đường</th>
+            <th>Quận</th>
+            <th>Giờ mở cửa</th>
+            <th>Giá</th>
+            <th>Note</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody id="table-body"></tbody>
+      </table>
+    </div>
+
+    <div id="pagination" class="pagination"></div>
+
+    <!-- Modal -->
+    <div id="modal" class="modal hidden">
+      <div id="modal-overlay" class="modal-overlay"></div>
+      <div class="modal-content">
+        <div class="modal-header">
+          <h2 id="modal-title">Add Place</h2>
+          <button id="btn-close-modal" class="btn-icon">&times;</button>
+        </div>
+        <form id="modal-form" class="modal-form">
+          <div class="form-row">
+            <div class="form-group">
+              <label for="input-tenQuan">Tên quán *</label>
+              <input id="input-tenQuan" type="text" required />
+            </div>
+            <div class="form-group">
+              <label for="input-tenMon">Tên món</label>
+              <input id="input-tenMon" type="text" />
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="input-phanLoai">Phân loại món</label>
+              <input id="input-phanLoai" type="text" />
+            </div>
+            <div class="form-group">
+              <label for="input-tenDuong">Tên đường</label>
+              <input id="input-tenDuong" type="text" />
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="input-quan">Quận</label>
+              <input id="input-quan" type="text" />
+            </div>
+            <div class="form-group">
+              <label for="input-gioMoCua">Giờ mở cửa</label>
+              <input id="input-gioMoCua" type="text" />
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="input-khoangGia">Khoảng giá</label>
+              <input id="input-khoangGia" type="text" />
+            </div>
+            <div class="form-group">
+              <label for="input-note">Note</label>
+              <input id="input-note" type="text" />
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="submit" class="btn btn-primary">Save</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>
