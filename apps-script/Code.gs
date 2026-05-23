@@ -43,7 +43,7 @@ function doPost(e) {
 }
 
 function handleRequest(e) {
-  const action = e.parameter.action;
+  const action = e?.parameter?.action;
   const sheet = getSheet_();
 
   if (!sheet) {

@@ -1,14 +1,15 @@
 /**
  * CONFIGURATION
  *
- * Replace this URL with your deployed Google Apps Script Web App URL.
- *
- * To get the URL:
- * 1. Import Food tour SG.xlsx into Google Sheets
- * 2. Extensions → Apps Script → paste Code.gs
- * 3. Deploy → New Deployment → Web App → Copy URL
+ * Deploy Code.gs as a Web App:
+ * 1. Open Apps Script editor (Extensions → Apps Script)
+ * 2. Paste apps-script/Code.gs
+ * 3. Deploy → New Deployment → Type: Web App
+ *    Execute as: Me, Who has access: Anyone
+ * 4. Copy the .exec URL → paste below as GOOGLE_SCRIPT_URL
  */
-export const GOOGLE_SHEET_API_URL =
-  "https://script.google.com/macros/s/YOUR_DEPLOYMENT_ID/exec";
+
+export const GOOGLE_SCRIPT_URL =
+  "https://script.google.com/macros/s/AKfycbwI3cbGMBKwnced1jWrx_2io85k_v6vB272IHl6W7-t_oHHUZ-gZOzYNaWyLvFF0eHVJg/exec";
 
 export const PAGE_SIZE = 50;
