@@ -686,7 +686,10 @@ body {
   .place-table thead { display: none; }
   .place-table tbody { display: block; }
   .place-table tr {
-    display: block;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: auto auto;
+    gap: 0.1rem 0.6rem;
     background: var(--card);
     border-radius: var(--radius);
     box-shadow: var(--shadow);
@@ -718,23 +721,25 @@ body {
     font-weight: 700;
     padding: 0;
     line-height: 1;
+    z-index: 1;
   }
   .place-table td.col-num::before { display: none; }
 
-  /* Name — hero line, no label */
+  /* Name — hero title row, full width */
   .place-table td.col-name {
+    grid-column: 1 / -1;
     display: block;
     font-size: 1.05rem;
     font-weight: 800;
     color: var(--heading);
     padding: 0 0 0.4rem;
-    margin-bottom: 0.35rem;
+    margin-bottom: 0.25rem;
     border-bottom: 1px dashed var(--divider);
     transition: color 0.3s, border-color 0.3s;
   }
   .place-table td.col-name::before { display: none; }
 
-  /* All other cells — label + value */
+  /* Content cells — 2-column grid, compact label-above-value */
   .place-table td.col-dish,
   .place-table td.col-cat,
   .place-table td.col-address,
@@ -742,13 +747,11 @@ body {
   .place-table td.col-time,
   .place-table td.col-price,
   .place-table td.col-note {
-    display: flex;
-    align-items: flex-start;
-    gap: 0.6rem;
-    padding: 0.28rem 0;
+    display: block;
+    padding: 0.15rem 0;
     border: none;
-    line-height: 1.5;
-    font-size: 0.85rem;
+    line-height: 1.45;
+    font-size: 0.82rem;
     max-height: none;
   }
   .place-table td.col-dish::before,
@@ -759,15 +762,25 @@ body {
   .place-table td.col-price::before,
   .place-table td.col-note::before {
     content: attr(data-label);
+    display: block;
     font-weight: 700;
     color: var(--text-soft);
-    font-size: 0.68rem;
+    font-size: 0.65rem;
     text-transform: uppercase;
-    letter-spacing: 0.3px;
-    min-width: 85px;
-    flex-shrink: 0;
-    padding-top: 1px;
+    letter-spacing: 0.25px;
+    margin-bottom: 0.05rem;
     transition: color 0.3s;
+  }
+
+  /* Note — full width (important info) */
+  .place-table td.col-note {
+    grid-column: 1 / -1;
+    margin-top: 0.2rem;
+    padding-top: 0.3rem;
+    border-top: 1px dotted var(--divider);
+    font-size: 0.83rem;
+    font-style: italic;
+    color: var(--text-soft);
   }
 
   /* Tag inside card */
@@ -852,7 +865,6 @@ body {
   .place-table td.col-time::before,
   .place-table td.col-price::before,
   .place-table td.col-note::before {
-    min-width: 70px;
     font-size: 0.65rem;
   }
   .place-table td { font-size: 0.8rem; }
