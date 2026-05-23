@@ -846,4 +846,15 @@ body {
 /* ── Tiny screens ── */
 @media (max-width: 380px) {
   .place-table td.col-dish::before,
-  .place-table
+  .place-table td.col-cat::before,
+  .place-table td.col-address::before,
+  .place-table td.col-district::before,
+  .place-table td.col-time::before,
+  .place-table td.col-price::before,
+  .place-table td.col-note::before {
+    min-width: 70px;
+    font-size: 0.65rem;
+  }
+  .place-table td { font-size: 0.8rem; }
+  .place-table tr { padding: 0.65rem 0.7rem 0.75rem; }
+}
