@@ -1,0 +1,3 @@
+- Clean code, make re-use function, not hard code.
+- Commit meanful content but short, must be English.
+- Not JS, must code by class + TS, good pattern.
