@@ -36,16 +36,16 @@ export class TableRenderer {
         .map(
           (p, i) => `
       <tr>
-        <td>${start + i + 1}</td>
-        <td class="col-name">${this._esc(p.tenQuan)}</td>
-        <td>${this._esc(p.tenMon)}</td>
-        <td><span class="tag">${this._esc(p.phanLoai)}</span></td>
-        <td>${this._esc(p.tenDuong)}</td>
-        <td>${this._esc(p.quan)}</td>
-        <td>${this._esc(p.gioMoCua)}</td>
-        <td>${this._esc(p.khoangGia)}</td>
-        <td class="col-note">${this._esc(p.note)}</td>
-        <td class="col-actions">
+        <td data-label="#">${start + i + 1}</td>
+        <td data-label="Tên quán" class="col-name">${this._esc(p.tenQuan)}</td>
+        <td data-label="Tên món">${this._esc(p.tenMon)}</td>
+        <td data-label="Phân loại"><span class="tag">${this._esc(p.phanLoai)}</span></td>
+        <td data-label="Đường">${this._esc(p.tenDuong)}</td>
+        <td data-label="Quận">${this._esc(p.quan)}</td>
+        <td data-label="Giờ mở cửa">${this._esc(p.gioMoCua)}</td>
+        <td data-label="Giá">${this._esc(p.khoangGia)}</td>
+        <td data-label="Note" class="col-note">${this._esc(p.note)}</td>
+        <td data-label="" class="col-actions">
           <button class="btn-icon btn-edit" data-stt="${p.stt}" title="Edit">✏️</button>
           <button class="btn-icon btn-delete" data-stt="${p.stt}" title="Delete">🗑️</button>
         </td>
