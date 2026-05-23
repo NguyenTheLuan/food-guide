@@ -3,6 +3,7 @@ import { SearchEngine } from "./search";
 import {
   NotificationManager,
   LoadingIndicator,
+  ConfirmDialog,
   TableRenderer,
   PaginationRenderer,
   FilterRenderer,
@@ -15,6 +16,7 @@ export class FoodTourApp {
   private readonly _search: SearchEngine;
   private readonly _notifier: NotificationManager;
   private readonly _loading: LoadingIndicator;
+  private readonly _confirm: ConfirmDialog;
   private readonly _table: TableRenderer;
   private readonly _pagination: PaginationRenderer;
   private readonly _filterRenderer: FilterRenderer;
@@ -29,6 +31,7 @@ export class FoodTourApp {
     this._search = new SearchEngine();
     this._notifier = new NotificationManager();
     this._loading = new LoadingIndicator();
+    this._confirm = new ConfirmDialog();
     this._table = new TableRenderer();
     this._pagination = new PaginationRenderer();
     this._filterRenderer = new FilterRenderer();
@@ -46,7 +49,7 @@ export class FoodTourApp {
     const filtered = this._search.filterPlaces(this._places, this._filters);
     const totalPages = Math.ceil(filtered.length / 50) || 1;
     if (this._page > totalPages) this._page = totalPages;
-    this._table.render(filtered, this._page, (p) => this._handleEdit(p), (s) => this._handleDelete(s));
+    this._table.render(filtered, this._page, (p) => this._handleEdit(p));
     this._pagination.render(filtered.length, this._page, (p) => {
       this._page = p;
       this._refreshView();
@@ -78,7 +81,7 @@ export class FoodTourApp {
     }
   }
 
-  private async _handleAdd(): Promise<void> {
+  private _handleAdd(): void {
     this._modal.show("Add New Place", null, async (data: PlaceFormData) => {
       if (!data.tenQuan) {
         this._notifier.show("Tên quán is required", "error");
@@ -96,30 +99,36 @@ export class FoodTourApp {
     });
   }
 
-  private async _handleEdit(place: Place): Promise<void> {
-    this._modal.show("Edit Place", place, async (data: PlaceFormData) => {
-      this._loading.show(true);
-      const res = await this._api.updatePlace({ ...data, stt: place.stt });
-      this._loading.show(false);
-      if (res.success) {
-        this._notifier.show("Place updated!");
-        await this._loadData();
-      } else {
-        this._notifier.show("Failed to update: " + res.message, "error");
+  private _handleEdit(place: Place): void {
+    this._modal.show(
+      "Edit Place",
+      place,
+      async (data: PlaceFormData) => {
+        this._loading.show(true);
+        const res = await this._api.updatePlace({ ...data, stt: place.stt });
+        this._loading.show(false);
+        if (res.success) {
+          this._notifier.show("Place updated!");
+          await this._loadData();
+        } else {
+          this._notifier.show("Failed to update: " + res.message, "error");
+        }
+      },
+      async (stt: number) => {
+        const ok = await this._confirm.show(`Delete "${place.tenQuan}"?`);
+        if (ok) {
+          this._loading.show(true);
+          const res = await this._api.deletePlace(stt);
+          this._loading.show(false);
+          if (res.success) {
+            this._notifier.show("Place deleted!");
+            await this._loadData();
+          } else {
+            this._notifier.show("Failed to delete: " + res.message, "error");
+          }
+        }
       }
-    });
-  }
-
-  private async _handleDelete(stt: number): Promise<void> {
-    this._loading.show(true);
-    const res = await this._api.deletePlace(stt);
-    this._loading.show(false);
-    if (res.success) {
-      this._notifier.show("Place deleted!");
-      await this._loadData();
-    } else {
-      this._notifier.show("Failed to delete: " + res.message, "error");
-    }
+    );
   }
 }
 

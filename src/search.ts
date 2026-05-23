@@ -6,7 +6,12 @@ export class SearchEngine {
     for (const p of places) {
       if (p.quan) set.add(p.quan);
     }
-    return [...set].sort();
+    return [...set].sort((a, b) => {
+      const dA = this._extractDistrictNumber(a);
+      const dB = this._extractDistrictNumber(b);
+      if (dA !== dB) return dA - dB;
+      return a.localeCompare(b, "vi");
+    });
   }
 
   extractCategories(places: Place[]): string[] {
@@ -42,7 +47,21 @@ export class SearchEngine {
       result = result.filter((p) => p.phanLoai === filters.phanLoai);
     }
 
-    return result;
+    return this._sortByDistrict(result);
+  }
+
+  private _sortByDistrict(places: Place[]): Place[] {
+    return [...places].sort((a, b) => {
+      const dA = this._extractDistrictNumber(a.quan ?? "");
+      const dB = this._extractDistrictNumber(b.quan ?? "");
+      if (dA !== dB) return dA - dB;
+      return a.quan.localeCompare(b.quan, "vi");
+    });
+  }
+
+  private _extractDistrictNumber(quan: string): number {
+    const m = quan.match(/(\d+)/);
+    return m ? parseInt(m[1], 10) : 999;
   }
 
   private _normalize(s: string): string {
