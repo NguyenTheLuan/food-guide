@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="vi" data-theme="warm-spice">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Food Tour SG — Preview</title>
+  <script type="module" crossorigin src="../assets/dev-2LUpLYOr.js"></script>
+  <link rel="modulepreload" crossorigin href="../assets/render-63B6Oy_y.js">
+  <link rel="stylesheet" crossorigin href="../assets/render-BQqjpHK6.css">
+</head>
+
+<body>
+    <header class="header">
+        <h1>🧪 Food Tour SG <span style="font-size:0.7em;opacity:0.6;">/dev</span></h1>
+        <p class="subtitle">Read‑only preview — data from xlsx, no API</p>
+        <div class="theme-switcher">
+            <button class="theme-btn warm-spice active" data-theme="warm-spice" title="Warm Spice"
+                aria-label="Warm Spice theme"></button>
+            <button class="theme-btn fresh-market" data-theme="fresh-market" title="Fresh Market"
+                aria-label="Fresh Market theme"></button>
+            <button class="theme-btn hanoi-night" data-theme="hanoi-night" title="Hanoi Night"
+                aria-label="Hanoi Night theme"></button>
+            <button class="theme-btn matcha-rose" data-theme="matcha-rose" title="Matcha & Rose"
+                aria-label="Matcha & Rose theme"></button>
+        </div>
+    </header>
+
+    <div id="notification" class="notification hidden"></div>
+
+    <div id="loading" class="loading">
+        <div class="spinner"></div>
+        <span>Loading xlsx data...</span>
+    </div>
+
+    <div class="toolbar">
+        <div class="search-box">
+            <input type="text" id="search-input" placeholder="Search by name, dish, street, district..." />
+        </div>
+        <div class="filter-group">
+            <select id="filter-quan">
+                <option value="">All Districts</option>
+            </select>
+            <select id="filter-phanloai">
+                <option value="">All Categories</option>
+            </select>
+        </div>
+    </div>
+
+    <div class="table-container">
+        <table class="place-table">
+            <thead>
+                <tr>
+                    <th class="col-num">#</th>
+                    <th class="col-name">Tên quán</th>
+                    <th class="col-dish">Tên món</th>
+                    <th class="col-cat">Phân loại</th>
+                    <th class="col-address">Đường</th>
+                    <th class="col-district">Quận</th>
+                    <th class="col-time">Giờ mở cửa</th>
+                    <th class="col-price">Giá</th>
+                    <th class="col-note">Note</th>
+                </tr>
+            </thead>
+            <tbody id="table-body"></tbody>
+        </table>
+    </div>
+
+    <div id="pagination" class="pagination"></div>
+
+</body>
+
+</html>

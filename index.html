@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="vi" data-theme="warm-spice">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Food Tour SG</title>
+  <script type="module" crossorigin src="./assets/main-CxZbDe-h.js"></script>
+  <link rel="modulepreload" crossorigin href="./assets/render-63B6Oy_y.js">
+  <link rel="stylesheet" crossorigin href="./assets/render-BQqjpHK6.css">
+</head>
+
+<body>
+  <header class="header">
+    <h1>🍜 Food Tour SG</h1>
+    <p class="subtitle">Saigon food guide</p>
+    <div class="theme-switcher">
+      <button class="theme-btn warm-spice active" data-theme="warm-spice" title="Warm Spice"
+        aria-label="Warm Spice theme"></button>
+      <button class="theme-btn fresh-market" data-theme="fresh-market" title="Fresh Market"
+        aria-label="Fresh Market theme"></button>
+      <button class="theme-btn hanoi-night" data-theme="hanoi-night" title="Hanoi Night"
+        aria-label="Hanoi Night theme"></button>
+      <button class="theme-btn matcha-rose" data-theme="matcha-rose" title="Matcha & Rose"
+        aria-label="Matcha & Rose theme"></button>
+    </div>
+  </header>
+
+  <div id="notification" class="notification hidden"></div>
+
+  <div id="loading" class="loading hidden">
+    <div class="spinner"></div>
+    <span>Loading...</span>
+  </div>
+
+  <div class="toolbar">
+    <div class="search-box">
+      <input type="text" id="search-input" placeholder="Search by name, dish, street, district..." />
+    </div>
+    <div class="filter-group">
+      <select id="filter-quan">
+        <option value="">All Districts</option>
+      </select>
+      <select id="filter-phanloai">
+        <option value="">All Categories</option>
+      </select>
+    </div>
+    <button id="btn-add" class="btn btn-primary">+ Add New</button>
+  </div>
+
+  <div class="table-container">
+    <table class="place-table">
+      <thead>
+        <tr>
+          <th class="col-num">#</th>
+          <th class="col-name">Tên quán</th>
+          <th class="col-dish">Tên món</th>
+          <th class="col-cat">Phân loại</th>
+          <th class="col-address">Đường</th>
+          <th class="col-district">Quận</th>
+          <th class="col-time">Giờ mở cửa</th>
+          <th class="col-price">Giá</th>
+          <th class="col-note">Note</th>
+        </tr>
+      </thead>
+      <tbody id="table-body"></tbody>
+    </table>
+  </div>
+
+  <div id="pagination" class="pagination"></div>
+
+  <!-- Confirm Dialog -->
+  <div id="confirm-dialog" class="confirm-dialog hidden">
+    <div class="confirm-overlay"></div>
+    <div class="confirm-box">
+      <p id="confirm-message">Are you sure?</p>
+      <div class="confirm-actions">
+        <button id="btn-confirm-cancel" class="btn btn-outline">Cancel</button>
+        <button id="btn-confirm-ok" class="btn btn-danger">Delete</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal -->
+  <div id="modal" class="modal hidden">
+    <div id="modal-overlay" class="modal-overlay"></div>
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 id="modal-title">Add Place</h2>
+        <button id="btn-close-modal" class="btn-icon">&times;</button>
+      </div>
+      <form id="modal-form" class="modal-form">
+        <div class="form-row">
+          <div class="form-group">
+            <label for="input-tenQuan">Tên quán *</label>
+            <input id="input-tenQuan" type="text" required />
+          </div>
+          <div class="form-group">
+            <label for="input-tenMon">Tên món (món ăn cụ thể)</label>
+            <input id="input-tenMon" type="text" />
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="select-phanLoai">Phân loại (nhóm món)</label>
+            <select id="select-phanLoai"></select>
+          </div>
+        </div>
+        <div id="custom-phanloai-row" class="form-row hidden-custom">
+          <div class="form-group">
+            <label for="input-phanLoai-custom">Tên phân loại mới</label>
+            <input id="input-phanLoai-custom" type="text" placeholder="Nhập tên nhóm món mới..." />
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="input-tenDuong">Tên đường</label>
+            <input id="input-tenDuong" type="text" />
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="input-quan">Quận</label>
+            <input id="input-quan" type="text" />
+          </div>
+          <div class="form-group">
+            <label for="input-gioMoCua">Giờ mở cửa</label>
+            <input id="input-gioMoCua" type="text" />
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="input-khoangGia">Khoảng giá</label>
+            <input id="input-khoangGia" type="text" />
+          </div>
+          <div class="form-group">
+            <label for="input-note">Note</label>
+            <input id="input-note" type="text" />
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-primary">Save</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+</body>
+
+</html>
