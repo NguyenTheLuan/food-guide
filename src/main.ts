@@ -136,4 +136,24 @@ export class FoodTourApp {
 document.addEventListener("DOMContentLoaded", () => {
   const app = new FoodTourApp();
   app.init();
+
+  // ── Theme switcher ──
+  const themeBtns = document.querySelectorAll<HTMLButtonElement>(".theme-btn");
+  const htmlEl = document.documentElement;
+
+  const savedTheme = localStorage.getItem("foodtour-theme");
+  if (savedTheme) {
+    htmlEl.setAttribute("data-theme", savedTheme);
+    themeBtns.forEach((b) => b.classList.toggle("active", b.dataset.theme === savedTheme));
+  }
+
+  themeBtns.forEach((btn) => {
+    btn.addEventListener("click", () => {
+      const theme = btn.dataset.theme;
+      if (!theme) return;
+      htmlEl.setAttribute("data-theme", theme);
+      localStorage.setItem("foodtour-theme", theme);
+      themeBtns.forEach((b) => b.classList.toggle("active", b === btn));
+    });
+  });
 });
