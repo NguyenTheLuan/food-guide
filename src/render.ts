@@ -67,15 +67,15 @@ export class TableRenderer {
         .map(
           (p, i) => `
       <tr data-stt="${p.stt}" class="place-row">
-        <td data-label="#">${start + i + 1}</td>
+        <td data-label="#" class="col-num">${start + i + 1}</td>
         <td data-label="Tên quán" class="col-name">${this._esc(p.tenQuan)}</td>
-        <td data-label="Tên món">${this._esc(p.tenMon)}</td>
-        <td data-label="Phân loại"><span class="tag">${this._esc(p.phanLoai)}</span></td>
+        <td data-label="Tên món" class="col-dish">${this._esc(p.tenMon)}</td>
+        <td data-label="Phân loại" class="col-cat"><span class="tag">${this._esc(p.phanLoai)}</span></td>
         <td data-label="Đường" class="col-address">${this._renderAddress(p.tenDuong)}</td>
-        <td data-label="Quận">${this._esc(p.quan)}</td>
-        <td data-label="Giờ mở cửa">${this._esc(p.gioMoCua)}</td>
-        <td data-label="Giá">${this._esc(p.khoangGia)}</td>
-        <td data-label="Note" class="col-note">${this._esc(p.note)}</td>
+        <td data-label="Quận" class="col-district">${this._esc(p.quan)}</td>
+        <td data-label="Giờ mở cửa" class="col-time">${this._renderMultiline(p.gioMoCua)}</td>
+        <td data-label="Giá" class="col-price">${this._renderMultiline(p.khoangGia)}</td>
+        <td data-label="Note" class="col-note">${this._renderMultiline(p.note)}</td>
       </tr>`
         )
         .join("");
@@ -93,8 +93,27 @@ export class TableRenderer {
     });
   }
 
+  private _renderMultiline(text: string): string {
+    if (!text) return "";
+    return this._esc(text).replace(/\n/g, "<br>");
+  }
+
   private _renderAddress(address: string): string {
     if (!address) return this._esc("");
+
+    // Split on ▪️ separators first
+    const parts = address.split(/\s*▪️\s*/);
+    if (parts.length > 1) {
+      return parts
+        .map((p, i) => {
+          const rendered = this._renderAddress(p.trim());
+          // Skip empty parts and the recursive call's own markers
+          if (!rendered) return "";
+          return `<span class="branch-line">📍 ${rendered}</span>`;
+        })
+        .filter(Boolean)
+        .join("");
+    }
 
     // Support multi-branch: split on numbered branch markers
     const branches = address.split(/(?=(?:Chi\s*[Nn]hánh|C[Nn]\s*|Co\s*[Ss]ở|CN)\s*\d+\s*[:：-])/g);
@@ -122,7 +141,7 @@ export class TableRenderer {
     return `<a href="${url}" target="_blank" rel="noopener" class="address-link" title="Open in Google Maps">${safeLabel}</a>`;
   }
 
-  private _esc(text: string): string {
+  public _esc(text: string): string {
     const el = document.createElement("span");
     el.textContent = text;
     return el.innerHTML;
@@ -187,6 +206,12 @@ export class FilterRenderer {
 }
 
 export class ModalManager {
+  private _categories: string[] = [];
+
+  setCategories(categories: string[]): void {
+    this._categories = [...categories].sort();
+  }
+
   show(
     title: string,
     place: Place | null,
@@ -201,12 +226,14 @@ export class ModalManager {
 
     (document.getElementById("input-tenQuan") as HTMLInputElement).value = place?.tenQuan ?? "";
     (document.getElementById("input-tenMon") as HTMLInputElement).value = place?.tenMon ?? "";
-    (document.getElementById("input-phanLoai") as HTMLInputElement).value = place?.phanLoai ?? "";
     (document.getElementById("input-tenDuong") as HTMLInputElement).value = place?.tenDuong ?? "";
     (document.getElementById("input-quan") as HTMLInputElement).value = place?.quan ?? "";
     (document.getElementById("input-gioMoCua") as HTMLInputElement).value = place?.gioMoCua ?? "";
     (document.getElementById("input-khoangGia") as HTMLInputElement).value = place?.khoangGia ?? "";
     (document.getElementById("input-note") as HTMLInputElement).value = place?.note ?? "";
+
+    // ── Phân loại: select dropdown + "Other" custom input ──
+    this._setupPhanLoaiSelect(place?.phanLoai ?? "");
 
     // Show/hide delete button in footer
     const footer = form.querySelector(".modal-footer")!;
@@ -234,7 +261,7 @@ export class ModalManager {
       onSave({
         tenQuan: (document.getElementById("input-tenQuan") as HTMLInputElement).value.trim(),
         tenMon: (document.getElementById("input-tenMon") as HTMLInputElement).value.trim(),
-        phanLoai: (document.getElementById("input-phanLoai") as HTMLInputElement).value.trim(),
+        phanLoai: this._getPhanLoaiValue(),
         tenDuong: (document.getElementById("input-tenDuong") as HTMLInputElement).value.trim(),
         quan: (document.getElementById("input-quan") as HTMLInputElement).value.trim(),
         gioMoCua: (document.getElementById("input-gioMoCua") as HTMLInputElement).value.trim(),
@@ -247,5 +274,63 @@ export class ModalManager {
 
   close(): void {
     document.getElementById("modal")!.classList.add("hidden");
+  }
+
+  private _setupPhanLoaiSelect(currentValue: string): void {
+    const select = document.getElementById("select-phanLoai") as HTMLSelectElement;
+    const customRow = document.getElementById("custom-phanloai-row")!;
+    const customInput = document.getElementById("input-phanLoai-custom") as HTMLInputElement;
+
+    // Build options: existing categories + "Other"
+    let options = '<option value="">-- Chọn nhóm món --</option>';
+    for (const cat of this._categories) {
+      const sel = cat === currentValue ? " selected" : "";
+      options += `<option value="${this._escAttr(cat)}"${sel}>${this._escHtml(cat)}</option>`;
+    }
+    options += '<option value="__other__">Khác (thêm mới)...</option>';
+    select.innerHTML = options;
+
+    // Determine initial state
+    const isExisting = this._categories.includes(currentValue);
+    const isOther = currentValue !== "" && !isExisting;
+
+    if (isOther) {
+      select.value = "__other__";
+      customInput.value = currentValue;
+      customRow.classList.remove("hidden-custom");
+    } else {
+      customInput.value = "";
+      customRow.classList.add("hidden-custom");
+    }
+
+    select.onchange = () => {
+      if (select.value === "__other__") {
+        customRow.classList.remove("hidden-custom");
+        customInput.focus();
+      } else {
+        customRow.classList.add("hidden-custom");
+        customInput.value = "";
+      }
+    };
+  }
+
+  private _getPhanLoaiValue(): string {
+    const select = document.getElementById("select-phanLoai") as HTMLSelectElement;
+    if (select.value === "__other__") {
+      return (document.getElementById("input-phanLoai-custom") as HTMLInputElement).value.trim();
+    }
+    return select.value;
+  }
+
+  private _escAttr(text: string): string {
+    const div = document.createElement("div");
+    div.appendChild(document.createTextNode(text));
+    return div.innerHTML;
+  }
+
+  private _escHtml(text: string): string {
+    const el = document.createElement("span");
+    el.textContent = text;
+    return el.innerHTML;
   }
 }

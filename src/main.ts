@@ -59,6 +59,7 @@ export class FoodTourApp {
   private _setupFilters(): void {
     const districts = this._search.extractDistricts(this._places);
     const categories = this._search.extractCategories(this._places);
+    this._modal.setCategories(categories);
     this._filterRenderer.render(districts, categories, (key, value) => {
       this._filters[key] = value;
       this._page = 1;

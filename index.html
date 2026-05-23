@@ -40,15 +40,15 @@
     <table class="place-table">
       <thead>
         <tr>
-          <th>#</th>
-          <th>Tên quán</th>
-          <th>Tên món</th>
-          <th>Phân loại</th>
-          <th>Đường</th>
-          <th>Quận</th>
-          <th>Giờ mở cửa</th>
-          <th>Giá</th>
-          <th>Note</th>
+          <th class="col-num">#</th>
+          <th class="col-name">Tên quán</th>
+          <th class="col-dish">Tên món</th>
+          <th class="col-cat">Phân loại</th>
+          <th class="col-address">Đường</th>
+          <th class="col-district">Quận</th>
+          <th class="col-time">Giờ mở cửa</th>
+          <th class="col-price">Giá</th>
+          <th class="col-note">Note</th>
         </tr>
       </thead>
       <tbody id="table-body"></tbody>
@@ -90,9 +90,17 @@
         </div>
         <div class="form-row">
           <div class="form-group">
-            <label for="input-phanLoai">Phân loại (nhóm món)</label>
-            <input id="input-phanLoai" type="text" />
+            <label for="select-phanLoai">Phân loại (nhóm món)</label>
+            <select id="select-phanLoai"></select>
           </div>
+        </div>
+        <div id="custom-phanloai-row" class="form-row hidden-custom">
+          <div class="form-group">
+            <label for="input-phanLoai-custom">Tên phân loại mới</label>
+            <input id="input-phanLoai-custom" type="text" placeholder="Nhập tên nhóm món mới..." />
+          </div>
+        </div>
+        <div class="form-row">
           <div class="form-group">
             <label for="input-tenDuong">Tên đường</label>
             <input id="input-tenDuong" type="text" />
